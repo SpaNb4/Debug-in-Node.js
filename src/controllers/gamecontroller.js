@@ -1,16 +1,16 @@
-var router = require('express').Router();
-var Game = require('../models/game');
+const router = require('express').Router();
+const Game = require('../models/game');
 
-router.get('/all/:id', (req, res) => {
-    Game.findAll({ where: { owner_id: req.params.id } }).then(
-        function findSuccess(data) {
+router.get('/all', (req, res) => {
+    Game.findAll({ where: { owner_id: req.user.id } }).then(
+        (data) => {
             res.status(200).json({
                 games: data,
                 message: 'Data fetched.',
             });
         },
 
-        function findFail() {
+        () => {
             res.status(500).json({
                 message: 'Data not found',
             });
@@ -20,13 +20,13 @@ router.get('/all/:id', (req, res) => {
 
 router.get('/:id', (req, res) => {
     Game.findOne({ where: { id: req.params.id, owner_id: req.user.id } }).then(
-        function findSuccess(game) {
+        (game) => {
             res.status(200).json({
                 game: game,
             });
         },
 
-        function findFail(err) {
+        () => {
             res.status(500).json({
                 message: 'Data not found.',
             });
@@ -37,20 +37,20 @@ router.get('/:id', (req, res) => {
 router.post('/create', (req, res) => {
     Game.create({
         title: req.body.title,
-        owner_id: req.body.id,
+        owner_id: req.user.id,
         studio: req.body.studio,
         esrb_rating: req.body.esrb_rating,
         user_rating: req.body.user_rating,
         have_played: req.body.have_played,
     }).then(
-        function createSuccess(game) {
+        (game) => {
             res.status(200).json({
                 game: game,
                 message: 'Game created.',
             });
         },
 
-        function createFail(err) {
+        (err) => {
             res.status(500).send(err.message);
         }
     );
@@ -72,14 +72,14 @@ router.put('/update/:id', (req, res) => {
             },
         }
     ).then(
-        function updateSuccess(game) {
+        (game) => {
             res.status(200).json({
                 game: game,
                 message: 'Successfully updated.',
             });
         },
 
-        function updateFail(err) {
+        (err) => {
             res.status(500).json({
                 message: err.message,
             });
@@ -94,14 +94,14 @@ router.delete('/remove/:id', (req, res) => {
             owner_id: req.user.id,
         },
     }).then(
-        function deleteSuccess(game) {
+        (game) => {
             res.status(200).json({
                 game: game,
                 message: 'Successfully deleted',
             });
         },
 
-        function deleteFail(err) {
+        (err) => {
             res.status(500).json({
                 error: err.message,
             });

@@ -4,14 +4,15 @@ const Sequelize = require('sequelize');
 const sequelize = new Sequelize(DB, DB_USER, DB_PASSWORD, {
     host: DB_HOST,
     dialect: 'postgres',
+    logging: false,
 });
 
 sequelize.authenticate().then(
-    function success() {
+    () => {
         console.log('Connected to DB');
     },
 
-    function fail(err) {
+    (err) => {
         console.log(`Error: ${err}`);
     }
 );
