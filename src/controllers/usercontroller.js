@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const { SECRET_KEY } = require('./common/config');
 
 router.post('/signup', (req, res) => {
     User.create({
@@ -12,7 +13,7 @@ router.post('/signup', (req, res) => {
         email: req.body.email,
     }).then(
         (user) => {
-            let token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', { expiresIn: 60 * 60 * 24 });
+            const token = jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: 60 * 60 * 24 });
             res.status(200).json({
                 user,
                 token,
@@ -30,7 +31,7 @@ router.post('/signin', (req, res) => {
         if (user) {
             bcrypt.compare(req.body.password, user.passwordHash, (err, matches) => {
                 if (matches) {
-                    var token = jwt.sign({ id: user.id }, 'lets_play_sum_games_man', { expiresIn: 60 * 60 * 24 });
+                    const token = jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: 60 * 60 * 24 });
                     res.json({
                         user,
                         message: 'Successfully authenticated.',
