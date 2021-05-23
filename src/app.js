@@ -14,12 +14,12 @@ app.use('/api/auth', userRouter);
 app.use(validationMiddleware);
 app.use('/api/game', gameRouter);
 
+db.sync()
+    .then(() => {
+        console.log('All models were synchronized successfully.');
+    })
+    .catch((err) => console.log(err));
 
-(async () => {
-    await db.sync();
-    console.log('All models were synchronized successfully.');
-})();
-
-app.listen(PORT, function () {
+app.listen(PORT, () => {
     console.log(`App is listening on ${PORT}`);
 });

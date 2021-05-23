@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
-const { SECRET_KEY } = require('./common/config');
+const { SECRET_KEY } = require('../common/config');
 
 router.post('/signup', (req, res) => {
     User.create({

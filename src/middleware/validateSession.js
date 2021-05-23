@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { SECRET_KEY } = require('./common/config');
+const { SECRET_KEY } = require('../common/config');
 
 module.exports = (req, res, next) => {
     if (req.method == 'OPTIONS') {
