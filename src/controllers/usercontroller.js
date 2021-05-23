@@ -38,11 +38,11 @@ router.post('/signin', (req, res) => {
                         sessionToken: token,
                     });
                 } else {
-                    res.status(502).send({ error: 'Passwords do not match.' });
+                    res.status(401).send({ error: 'Passwords do not match.' });
                 }
             });
         } else {
-            res.status(403).send({ error: 'User not found.' });
+            res.status(404).send({ error: 'User not found.' });
         }
     });
 });
